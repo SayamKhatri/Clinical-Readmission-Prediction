@@ -22,8 +22,14 @@ def predict(df_new):
     Output: DataFrame with risk scores and binary flags
     """
     X_all, _, _ = build_features(df_new)
+    print("AVAILABLE FEATURES:\n", X_all.columns.sort_values().tolist())
+    print("REQUESTED FEATURES:\n", rf_features)
+    missing = list(set(rf_features) - set(X_all.columns))
+    print("MISSING:\n", missing)
 
     X_sub = X_all[rf_features]
+
+
 
     probs = rf.predict_proba(X_sub)[:,1]
     flags = (probs >= RF_THRESH).astype(int)
